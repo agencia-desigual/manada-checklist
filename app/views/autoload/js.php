@@ -28,7 +28,7 @@
     <!-- Módulos -->
     <?php if(!empty($js["modulos"])): ?>
 
-        <?php foreach ($js["modulos"]as $j): ?>
+        <?php foreach ($js["modulos"] as $j): ?>
             <script type='module' src='<?= BASE_URL; ?>assets/app/method/<?= $j ?>.js'></script>
         <?php endforeach; ?>
 
@@ -38,7 +38,7 @@
     <!-- Páginas -->
     <?php if(!empty($js["pages"])): ?>
 
-        <?php foreach ($js["pages"]as $j): ?>
+        <?php foreach ($js["pages"] as $j): ?>
             <script src='<?= BASE_URL; ?>assets/app/page/<?= $j ?>.js'></script>
         <?php endforeach; ?>
 

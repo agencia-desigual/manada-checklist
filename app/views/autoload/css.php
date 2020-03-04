@@ -19,5 +19,5 @@
 <?php endif; ?>
 
 <!-- AutoLoad do CSS personalozado  -->
-<link rel="stylesheet" src="<?= BASE_URL ?>assets/custom/css/estilo.css">
-<link rel="stylesheet" src="<?= BASE_URL ?>assets/custom/css/responsivo.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/custom/css/estilo.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/custom/css/responsivo.css">

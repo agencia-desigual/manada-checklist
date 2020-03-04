@@ -2,7 +2,8 @@ import Session from "./main/Session.js"
 
 // Dados importantes
 var Dados = {
-    "url": ""
+    "url": "http://localhost/git/manada-checklist/",
+    "urlApi": "http://localhost/git/manada-checklist/api/",
 }
 
 
@@ -24,15 +25,26 @@ $(".maskCel").mask("(99) 99999-9999");
  * @param tipo
  * @param url
  * @param dados
+ * @param token
  * @return {Promise<any>}
  */
-function enviaApi(tipo, url, dados = null)
+function enviaApi(tipo, url, dados = null, token = null)
 {
-    return new Promise(function (resolve) {
+    return new Promise(function (resolve, reject) {
+
+        // Variaveis
+        var header = {};
+
+        // Verifica se informou o token
+        if(token != null)
+        {
+            header.Token = 'Bearer ' + token;
+        }
 
         // Realiza a requisição
         $.ajax({
             url: url,
+            headers: header,
             type: tipo,
             dataType: "json",
             data: dados,
@@ -45,7 +57,7 @@ function enviaApi(tipo, url, dados = null)
                 if(data.tipo === true)
                 {
                     // Retorna o resultado
-                   resolve(data)
+                    resolve(data)
                 }
                 else
                 {
@@ -53,7 +65,7 @@ function enviaApi(tipo, url, dados = null)
                     if(data.code === 401)
                     {
                         // Redireciona o usuario para a página de logout
-                        location.href = Dados.url + "login";
+                        location.href = Dados.url + "logout";
                     }
                     else
                     {
@@ -62,6 +74,9 @@ function enviaApi(tipo, url, dados = null)
                             title: 'Oops...',
                             text: data.mensagem
                         });
+
+                        reject(true);
+
                     } // Erro o token acabou
 
                 } // Ocorreu algum erro
@@ -76,12 +91,12 @@ function enviaApi(tipo, url, dados = null)
 
 
 /**
-* Método responsável por disparar um alerta de erro
-* -------------------------------------------------
-* @author igorcacerez
-* -------------------------------------------------
-* @param mensagem
-*/
+ * Método responsável por disparar um alerta de erro
+ * -------------------------------------------------
+ * @author igorcacerez
+ * -------------------------------------------------
+ * @param mensagem
+ */
 function error(mensagem)
 {
     Swal.fire({
@@ -179,8 +194,6 @@ function calculaData(data)
         resolve(resultado);
     });
 } // End >> Fun::calculaData()
-
-
 
 
 /**

@@ -1,17 +1,20 @@
 -- TABELA USUÁRIO
 CREATE TABLE usuario (
-    id_usuario INT NOT NULL,
+    id_usuario INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL,
     senha VARCHAR(50) NOT NULL,
-    perfil VARCHAR(150),
+    perfil VARCHAR(150) DEFAULT "avatar-nulo.png",
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_usuario)
 );
 
+INSERT INTO `usuario` ( `nome`, `email`, `senha`, `data_cadastro`)
+VALUES ('Edilson Pereira Mendonça', 'edilson@desigual.com.br', '202cb962ac59075b964b07152d234b70', CURRENT_TIMESTAMP);
+
 -- TABELA CLIENTE
 CREATE TABLE cliente (
-    id_cliente INT NOT NULL,
+    id_cliente INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_cliente)
@@ -19,7 +22,7 @@ CREATE TABLE cliente (
 
 -- TABELA FUNCIONARIO
 CREATE TABLE funcionario (
-    id_funcionario INT NOT NULL,
+    id_funcionario INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     cargo VARCHAR(100) NOT NULL,
     perfil VARCHAR(100) NOT NULL,
@@ -29,7 +32,7 @@ CREATE TABLE funcionario (
 
 -- TABELA CATEGORIA
 CREATE TABLE categoria(
-    id_categoria INT NOT NULL,
+    id_categoria INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_categoria)
@@ -37,11 +40,12 @@ CREATE TABLE categoria(
 
 -- TABELA EQUIPAMENTO
 CREATE TABLE equipamento(
-    id_equipamento INT NOT NULL,
+    id_equipamento INT NOT NULL AUTO_INCREMENT,
     id_categoria INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
     quantidade INT,
     categoria VARCHAR (100),
+    imagem VARCHAR(150) DEFAULT "equipamento-nulo.png",
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_equipamento),
     FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria)
@@ -49,7 +53,7 @@ CREATE TABLE equipamento(
 
 -- TABELA PROJETO
 CREATE TABLE projeto(
-    id_projeto INT NOT NULL,
+    id_projeto INT NOT NULL AUTO_INCREMENT,
     id_cliente INT NOT NULL,
     id_usuario INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
@@ -66,7 +70,7 @@ CREATE TABLE projeto(
 
 -- TABELA PROJETO FUNCIONARIO NxN
 CREATE TABLE projeto_funcionario(
-    id_projeto_funcionario INT NOT NULL,
+    id_projeto_funcionario INT NOT NULL AUTO_INCREMENT,
     id_projeto INT NOT NULL,
     id_funcionario INT NOT NULL,
     PRIMARY KEY (id_projeto_funcionario),
@@ -76,7 +80,7 @@ CREATE TABLE projeto_funcionario(
 
 -- TABELA PROJETO EQUIPAMENTO NxN
 CREATE TABLE projeto_equipamento(
-    id_projeto_equipamento INT NOT NULL,
+    id_projeto_equipamento INT NOT NULL AUTO_INCREMENT,
     id_projeto INT NOT NULL,
     id_equipamento INT NOT NULL,
     PRIMARY KEY (id_projeto_equipamento),

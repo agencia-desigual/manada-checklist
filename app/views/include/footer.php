@@ -1,6 +1,6 @@
 <!-- Footer -->
 <footer class="footer">
-    © 2019 - 2020 Stexo <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</span>.
+    © Desigual <?= date("Y") ?>.
 </footer>
 
 <!-- End Footer -->
@@ -18,7 +18,7 @@
 <script src="<?= BASE_URL ?>assets/theme/pages/dashboard.init.js"></script>
 
 <!-- App js -->
-<script src="<?= BASE_URL ?>assets/theme/js/app.js"></script>]
+<script src="<?= BASE_URL ?>assets/theme/js/app.js"></script>
 
 <?php $this->view("autoload/js") ?>
 

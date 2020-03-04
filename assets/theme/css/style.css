@@ -864,7 +864,7 @@ dt {
 }
 
 #topnav .topbar-main {
-  background: #30419b;
+  background: #000;
 }
 
 #topnav .topbar-main .logo {
@@ -1238,8 +1238,8 @@ body {
 }
 
 #topnav .navbar-custom {
-  background-color: #222437;
-  border-bottom: 2px solid #2e304a;
+  background-color: #000;
+  border-top: 3px solid #1d1b1bc7;
 }
 
 #topnav .navigation-menu {

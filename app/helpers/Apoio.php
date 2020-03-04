@@ -44,4 +44,49 @@ class Apoio
         return $numero . $array[$cont];
     }
 
+    /**
+     * Método responsável por formatar a url certa
+     * da imagem de perfil do usuário
+     * ------------------------------------------------------------------
+     * @author igorcacerez
+     * ------------------------------------------------------------------
+     * @param $perfil
+     * @return string
+     */
+    public function configuraImagem($obj)
+    {
+        $retorno = null;
+
+        // Verifica se é alguma coisa
+        if($obj != null)
+        {
+            // Verificando se é um usuario
+            if (!empty($obj->id_usuario))
+            {
+                if ($obj->perfil == "avatar-nulo.png" || $obj->perfil == null)
+                {
+                    $retorno = BASE_URL.'assets/custom/img/avatar-nulo.png';
+                }
+                else
+                {
+                    $retorno = BASE_STORAGE.'usuario/'.$obj->id_usuario.'/'.$obj->perfil;
+                }
+            }
+            else
+            {
+                if ($obj->imagem == "equipamento-nulo.png" || $obj->imagem == null)
+                {
+                    $retorno = BASE_URL.'assets/custom/img/equipamento-nulo.png';
+                }
+                else
+                {
+                    $retorno = BASE_STORAGE.'equipamento/'.$obj->id_equipamento.'/'.$obj->imagem;
+                }
+            }// Caso for um equipamento
+        }
+
+        return $retorno;
+
+    } // End >> fun::configuraPerfil()
+
 } // End >> Class::Apoio()
