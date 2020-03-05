@@ -4,6 +4,7 @@ CREATE TABLE usuario (
     nome VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL,
     senha VARCHAR(50) NOT NULL,
+    status INT NOT NULL,
     perfil VARCHAR(150) DEFAULT "avatar-nulo.png",
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_usuario)
@@ -11,6 +12,13 @@ CREATE TABLE usuario (
 
 INSERT INTO `usuario` ( `nome`, `email`, `senha`, `data_cadastro`)
 VALUES ('Edilson Pereira Mendonça', 'edilson@desigual.com.br', '202cb962ac59075b964b07152d234b70', CURRENT_TIMESTAMP);
+
+INSERT INTO `usuario` ( `nome`, `email`, `senha`, `data_cadastro`)
+VALUES ('Leonardo', 'leo@desigual.com.br', '202cb962ac59075b964b07152d234b70', CURRENT_TIMESTAMP);
+
+INSERT INTO `usuario` ( `nome`, `email`, `senha`, `data_cadastro`)
+VALUES ('Igor', 'igor@desigual.com.br', '202cb962ac59075b964b07152d234b70', CURRENT_TIMESTAMP);
+
 
 -- TABELA CLIENTE
 CREATE TABLE cliente (
@@ -20,15 +28,22 @@ CREATE TABLE cliente (
     PRIMARY KEY (id_cliente)
 );
 
+INSERT INTO `cliente` ( `nome`, `data_cadastro`)
+VALUES ('World Colors', CURRENT_TIMESTAMP);
+
 -- TABELA FUNCIONARIO
 CREATE TABLE funcionario (
     id_funcionario INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(150) NOT NULL,
     cargo VARCHAR(100) NOT NULL,
-    perfil VARCHAR(100) NOT NULL,
+    status INT NOT NULL,
+    perfil VARCHAR(150) DEFAULT "avatar-nulo.png",
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_funcionario)
 );
+
+INSERT INTO `funcionario` ( `nome`, `cargo`, `data_cadastro`)
+VALUES ('Jamal', 'Video Maker', CURRENT_TIMESTAMP);
 
 -- TABELA CATEGORIA
 CREATE TABLE categoria(
@@ -38,13 +53,36 @@ CREATE TABLE categoria(
     PRIMARY KEY (id_categoria)
 );
 
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Som', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Câmera', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Movimento', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Acessório', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Bateria', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Carregador', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Monitor', CURRENT_TIMESTAMP);
+
+INSERT INTO `categoria` ( `nome`, `data_cadastro`)
+VALUES ('Tripé', CURRENT_TIMESTAMP);
+
 -- TABELA EQUIPAMENTO
 CREATE TABLE equipamento(
     id_equipamento INT NOT NULL AUTO_INCREMENT,
     id_categoria INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
     quantidade INT,
-    categoria VARCHAR (100),
     imagem VARCHAR(150) DEFAULT "equipamento-nulo.png",
     data_cadastro TIMESTAMP,
     PRIMARY KEY (id_equipamento),
@@ -83,6 +121,7 @@ CREATE TABLE projeto_equipamento(
     id_projeto_equipamento INT NOT NULL AUTO_INCREMENT,
     id_projeto INT NOT NULL,
     id_equipamento INT NOT NULL,
+    quantidade INT NULL,
     PRIMARY KEY (id_projeto_equipamento),
     FOREIGN KEY (id_projeto) REFERENCES projeto (id_projeto),
     FOREIGN KEY (id_equipamento) REFERENCES equipamento (id_equipamento)

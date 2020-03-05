@@ -4,7 +4,7 @@
 defined('BASE_URL') OR define('BASE_URL', 'http://localhost/git/manada-checklist/');
 
 // URL base do storage
-defined('BASE_STORANGE') OR define('BASE_STORAGE', 'http://localhost/git/manada-checklist/storage');
+defined('BASE_STORANGE') OR define('BASE_STORAGE', 'http://localhost/git/manada-checklist/storage/');
 
 // Session | Caso deseje que a session seja iniciada em todas as páginas
 // Apenas mude a constante para true.
@@ -15,6 +15,10 @@ $pluginsAutoLoad = [
     "sweetalert" => [
         "js" => ["sweetalert2.all"],
         "css" => null,
+    ],
+    "datatables" => [
+        "js" => ["js/js"],
+        "css" => ["css/css"],
     ],
     "owl-carousel" => [
         "js" => ["owl.carousel.min"],

@@ -97,7 +97,7 @@
                     <ul class="navigation-menu">
 
                         <li class="has-submenu">
-                            <a href="index.html"><i class="icon-accelerator"></i> Dashboard</a>
+                            <a href="<?= BASE_URL ?>"><i class="icon-accelerator"></i> Dashboard</a>
                         </li>
 
                         <li class="has-submenu">
@@ -105,19 +105,19 @@
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#"><i class="fas fa-user-friends"></i> Funcionários </a>
+                            <a href="<?= BASE_URL ?>funcionarios"><i class="fas fa-user-friends"></i> Funcionários </a>
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#"><i class="fas fa-industry"></i> Empresas </a>
+                            <a href="<?= BASE_URL ?>empresas"><i class="fas fa-industry"></i> Empresas </a>
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#"><i class="fas fa-camera-retro"></i> Equipamentos </a>
+                            <a href="<?= BASE_URL ?>equipamentos"><i class="fas fa-camera-retro"></i> Equipamentos </a>
                         </li>
 
                         <li class="has-submenu">
-                            <a href="#"><i class="fas fa-list-ol"></i> Projeto </a>
+                            <a href="<?= BASE_URL ?>projetos"><i class="fas fa-list-ol"></i> Projetos </a>
                         </li>
 
                     </ul>

@@ -69,7 +69,7 @@ class Apoio
                 }
                 else
                 {
-                    $retorno = BASE_STORAGE.'usuario/'.$obj->id_usuario.'/'.$obj->perfil;
+                    $retorno = BASE_STORAGE.'usuario/'.$obj->id_usuario.'/perfil/'.$obj->perfil;
                 }
             }
             else

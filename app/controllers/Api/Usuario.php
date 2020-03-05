@@ -106,10 +106,6 @@ class Usuario extends CI_controller
     public function insert()
     {
 
-        // Adicionando o usuario na SESSION
-        $_SESSION['usuario']['nome'] = "Edilson";
-        $_SESSION['usuario']['email'] = "edilson@desigual.com.br";
-
         // Verificando se o usário está logado
         $this->seguranca();
 
@@ -120,6 +116,7 @@ class Usuario extends CI_controller
         // Verificando se enviou POST
         if(isset($_POST))
         {
+
             // Pegando os dados
             $post = $_POST;
 
@@ -131,10 +128,13 @@ class Usuario extends CI_controller
 
                 if($busca->rowCount() == 0)
                 {
+                    if(isset($post['status'])){ $status = 1; } else{ $status = 0; }
+
                     $salva = [
                         "nome" => $post['nome'],
                         "email" => $post['email'],
                         "senha" => md5($post['senha']),
+                        "status" => $status
                     ];
 
                     //Salva o usuario
@@ -151,7 +151,7 @@ class Usuario extends CI_controller
                             $objHelperFile = new File();
 
                             // Criando o caminho com id do usuario
-                            $caminho = "./storage/usuario/".$id;
+                            $caminho = "./storage/usuario/".$id."/perfil";
 
                             // Verifica se já existe
                             if(!is_dir($caminho))
@@ -162,15 +162,14 @@ class Usuario extends CI_controller
 
                             // Configurações para upload
                             $objHelperFile->setMaxSize(2 * MB);
-                            $objHelperFile->setFile($_FILES["arquivo"]);
-                            $objHelperFile->setStorange($caminho . "/perfil");
+                            $objHelperFile->setFile($_FILES["perfil"]);
+                            $objHelperFile->setStorange($caminho);
 
                             $arquivo = $objHelperFile->upload(true);
 
                             if ($arquivo != null && $arquivo != false)
                             {
                                 $update = $this->objModelUsuario->update(["perfil" => $arquivo],["id_usuario" => $id]);
-
                             }
 
                         }
@@ -240,9 +239,6 @@ class Usuario extends CI_controller
      */
     public function update($id)
     {
-        // Adicionando o usuario na SESSION
-        $_SESSION['usuario']['nome'] = "Edilson";
-        $_SESSION['usuario']['email'] = "edilson@desigual.com.br";
 
         // Verificando se o usário está logado
         $this->seguranca();
@@ -262,9 +258,13 @@ class Usuario extends CI_controller
             {
                 $update = [
                     "nome" => $post['nome'],
-                    "email" => $post['email'],
-                    "senha" => md5($post['senha']),
                 ];
+
+                // Verificando se a senha está vazia
+                if($post['senha'] != "" || $post['senha'] != null)
+                {
+                    $update ["senha"] = md5($post['senha']);
+                }
 
                 // Verificando se informou imagem
                 if(isset($_FILES['perfil']['name']))
@@ -272,7 +272,7 @@ class Usuario extends CI_controller
                     $objHelperFile = new File();
 
                     // Criando o caminho com id do usuario
-                    $caminho = "./storage/usuario/".$id;
+                    $caminho = "./storage/usuario/".$id."/perfil";
 
                     // Verifica se já existe
                     if(!is_dir($caminho))
@@ -284,20 +284,19 @@ class Usuario extends CI_controller
                     // Configurações para upload
                     $objHelperFile->setMaxSize(2 * MB);
                     $objHelperFile->setFile($_FILES["perfil"]);
-                    $objHelperFile->setStorange($caminho . "/perfil");
+                    $objHelperFile->setStorange($caminho);
 
                     $arquivo = $objHelperFile->upload();
 
                     if ($arquivo != null && $arquivo != false)
                     {
-                        $update = ["perfil" => $arquivo];
+                        $update ["perfil"] = $arquivo;
                     }
 
                 }
 
-
                 // Update do usuario
-                $altera = $this->objModelUsuario->update([$update],["id_usuario" => $id]);
+                $altera = $this->objModelUsuario->update($update,["id_usuario" => $id]);
 
                 if ($altera != false)
                 {
@@ -358,10 +357,6 @@ class Usuario extends CI_controller
      */
     public function delete($id)
     {
-        // Adicionando o usuario na SESSION
-        $_SESSION['usuario']['nome'] = "Edilson";
-        $_SESSION['usuario']['email'] = "edilson@desigual.com.br";
-
         // Verificando se o usário está logado
         $this->seguranca();
 
