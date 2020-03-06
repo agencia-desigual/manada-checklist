@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <title>Manada | Gerenciamento de equipamentos</title>
-    <link rel="shortcut icon" href="<?= BASE_URL ?>assets/theme/images/favicon.ico">
+    <link rel="shortcut icon" href="<?= BASE_URL ?>assets/custom/img/logo.png">
 
     <!-- Morris Chart CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/theme/plugins/morris/morris.css">

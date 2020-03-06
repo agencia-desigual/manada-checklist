@@ -271,11 +271,94 @@ class Principal extends CI_controller
         //Pegando o link da img
         $usuario->perfil = $perfil;
 
+        $funcionarios = $this->objModelFuncionarios->get(null,"id_funcionario DESC")->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($funcionarios as $funcionario)
+        {
+            $funcionario->perfil = $this->objHelperApoio->configuraImagem($funcionario);
+        }
+
         $dados = [
-            "usuario" => $usuario
+            "usuario" => $usuario,
+            "funcionarios" => $funcionarios,
+            "js" => [
+                "pages" => ["datatables"],
+                "modulos" => ["Funcionario"]
+            ]
         ];
 
         $this->view("painel/funcionarios/listar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de adicionar
+     * um funcionario
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function funcionarioAdicionar()
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        $dados = [
+            "usuario" => $usuario,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Funcionario"]
+            ]
+        ];
+
+        $this->view("painel/funcionarios/adicionar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de editar
+     * um usuario
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function funcionarioEditar($id)
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        // Buscando o usuario selecionado
+        $funcionario = $this->objModelFuncionarios->get(["id_funcionario" => $id])->fetch(\PDO::FETCH_OBJ);
+
+        $dados = [
+            "usuario" => $usuario,
+            "funcionario" => $funcionario,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Funcionario"]
+            ]
+        ];
+
+        $this->view("painel/funcionarios/editar",$dados);
     }
 
 
@@ -301,11 +384,90 @@ class Principal extends CI_controller
         //Pegando o link da img
         $usuario->perfil = $perfil;
 
+        $empresas = $this->objModelClientes->get()->fetchAll(\PDO::FETCH_OBJ);
+
         $dados = [
-            "usuario" => $usuario
+            "usuario" => $usuario,
+            "empresas" => $empresas,
+            "js" => [
+                "pages" => ["datatables"],
+                "modulos" => ["Empresa"]
+            ]
         ];
 
         $this->view("painel/empresas/listar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de adicionar
+     * uma empresa
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function empresaAdicionar()
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        $dados = [
+            "usuario" => $usuario,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Empresa"]
+            ]
+        ];
+
+        $this->view("painel/empresas/adicionar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de editar
+     * uma empresa
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function empresaEditar($id)
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        // Buscando o usuario selecionado
+        $empresa = $this->objModelClientes->get(["id_cliente" => $id])->fetch(\PDO::FETCH_OBJ);
+
+        $dados = [
+            "usuario" => $usuario,
+            "empresa" => $empresa,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Empresa"]
+            ]
+        ];
+
+        $this->view("painel/empresas/editar",$dados);
     }
 
 
@@ -331,11 +493,101 @@ class Principal extends CI_controller
         //Pegando o link da img
         $usuario->perfil = $perfil;
 
+        $equipamentos = $this->objModelEquipamentos->get()->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($equipamentos as $equipamento)
+        {
+            $buscaCategoria = $this->objModelCategoria->get(["id_categoria" => $equipamento->id_categoria])->fetch(\PDO::FETCH_OBJ);
+            $equipamento->categoria = $buscaCategoria->nome;
+
+            //Pegando o link da imagem
+            $equipamento->perfil = $this->objHelperApoio->configuraImagem($equipamento);
+        }
+
         $dados = [
-            "usuario" => $usuario
+            "usuario" => $usuario,
+            "equipamentos" => $equipamentos,
+            "js" => [
+                "pages" => ["datatables"],
+                "modulos" => ["Equipamento"]
+            ]
         ];
 
         $this->view("painel/equipamentos/listar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de adicionar
+     * um equipamento
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function equipamentoAdicionar()
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        $categorias = $this->objModelCategoria->get()->fetchAll(\PDO::FETCH_OBJ);
+
+        $dados = [
+            "usuario" => $usuario,
+            "categorias" => $categorias,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Equipamento"]
+            ]
+        ];
+
+        $this->view("painel/equipamentos/adicionar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de editar
+     * um equipamento
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function equipamentoEditar($id)
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        // Buscando o usuario selecionado
+        $equipamentos = $this->objModelEquipamentos->get(["id_equipamento" => $id])->fetch(\PDO::FETCH_OBJ);
+
+        $dados = [
+            "usuario" => $usuario,
+            "equipamentos" => $equipamentos,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Equipamento"]
+            ]
+        ];
+
+        $this->view("painel/equipamentos/editar",$dados);
     }
 
 

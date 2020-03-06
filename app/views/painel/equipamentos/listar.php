@@ -7,12 +7,12 @@
         <div class="page-title-box">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <h4 class="page-title">Usuários</h4>
+                    <h4 class="page-title">Equipamentos</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-right">
                         <li class="breadcrumb-item"><a href="<?= BASE_URL ?>">Manada</a></li>
-                        <li class="breadcrumb-item active">Usuários</li>
+                        <li class="breadcrumb-item active">Equipamentos</li>
                     </ol>
                 </div>
             </div>
@@ -22,41 +22,38 @@
         <!-- TABELA -->
         <div class="row">
             <div class="col-xl-12">
+                <div class="centraliza-itens">
+                    <div>
+                        <a href="<?= BASE_URL; ?>equipamento/adicionar/" class="btn btn-info btn-lg waves-effect waves-light">Novo Equipamento</a>
+                    </div>
+                </div>
+                <br>
                 <div class="card m-b-30">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title mb-4">Active Deals</h4>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover js-exportable">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Contact</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col" colspan="2">Date</th>
-
+                                    <th scope="col">NOME</th>
+                                    <th scope="col">CATEGORIA</th>
+                                    <th scope="col">IMAGEM</th>
+                                    <th scope="col">QUANTIDADE</th>
+                                    <th scope="col">AÇÕES</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Philip Smead</td>
-                                    <td><span class="badge badge-success">Delivered</span></td>
-                                    <td>$9,420,000</td>
-                                    <td>
-                                        <div>
-                                            <img src="assets/images/users/user-2.jpg" alt="" class="thumb-md rounded-circle mr-2"> Philip Smead
-                                        </div>
-                                    </td>
-                                    <td>Houston, TX 77074</td>
-                                    <td>15/1/2018</td>
-
-                                    <td>
-                                        <div>
-                                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <?php foreach ($equipamentos as $equipamento) : ?>
+                                    <tr id="equipamento-<?= $equipamento->id_equipamento ?>">
+                                        <td><?= $equipamento->nome ?></td>
+                                        <td><?= $equipamento->categoria ?></td>
+                                        <td><img src="<?= $equipamento->perfil ?>" width="50px"></td>
+                                        <td><?= $equipamento->quantidade ?></td>
+                                        <td>
+                                            <a href="#ExcluirEquipamento" class="apagarEquipamento" data-id="<?= $equipamento->id_equipamento ?>" > <i style="font-size: 25px;color: #b70a0a;margin-right: 15px;margin-left: -10px;" class="far fa-trash-alt"></i></a>
+                                            <a href="<?= BASE_URL; ?>equipamento/editar/<?=$equipamento->id_equipamento ?>"> <i style="font-size: 25px;color: #0a67b7;" class="far fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>

@@ -72,6 +72,17 @@ class Apoio
                     $retorno = BASE_STORAGE.'usuario/'.$obj->id_usuario.'/perfil/'.$obj->perfil;
                 }
             }
+            elseif (!empty($obj->id_funcionario))
+            {
+                if ($obj->perfil == "avatar-nulo.png" || $obj->perfil == null)
+                {
+                    $retorno = BASE_URL.'assets/custom/img/avatar-nulo.png';
+                }
+                else
+                {
+                    $retorno = BASE_STORAGE.'funcionario/'.$obj->id_funcionario.'/perfil/'.$obj->perfil;
+                }
+            }
             else
             {
                 if ($obj->imagem == "equipamento-nulo.png" || $obj->imagem == null)
@@ -80,7 +91,7 @@ class Apoio
                 }
                 else
                 {
-                    $retorno = BASE_STORAGE.'equipamento/'.$obj->id_equipamento.'/'.$obj->imagem;
+                    $retorno = BASE_STORAGE.'equipamento/'.$obj->id_equipamento.'/imagem/'.$obj->imagem;
                 }
             }// Caso for um equipamento
         }
