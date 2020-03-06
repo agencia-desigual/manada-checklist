@@ -1,10 +1,12 @@
 <?php
 
 // URL base do site.
-defined('BASE_URL') OR define('BASE_URL', 'http://localhost/git/manada-checklist/');
+defined('BASE_URL') OR define('BASE_URL', 'http://192.168.0.179/git/manada-checklist/');
+//defined('BASE_URL') OR define('BASE_URL', 'http://localhost/git/manada-checklist/');
 
 // URL base do storage
-defined('BASE_STORANGE') OR define('BASE_STORAGE', 'http://localhost/git/manada-checklist/storage/');
+defined('BASE_STORANGE') OR define('BASE_STORAGE', 'http://192.168.0.179/git/manada-checklist/storage/');
+//defined('BASE_STORANGE') OR define('BASE_STORAGE', 'http://localhost/git/manada-checklist/storage/');
 
 // Session | Caso deseje que a session seja iniciada em todas as páginas
 // Apenas mude a constante para true.
