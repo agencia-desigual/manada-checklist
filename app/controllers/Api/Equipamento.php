@@ -165,12 +165,10 @@ class Equipamento extends CI_controller
         {
             $post = $_POST;
 
-            if(isset($post['status'])){ $status = 1; } else { $status = 0; }
-
             $update = [
                 "nome" => $post['nome'],
-                "cargo" => $post['cargo'],
-                "status" => $status
+                "id_categoria" => $post['id_categoria'],
+                "quantidade" => $post['quantidade'],
             ];
 
             // Verificando se informou imagem
@@ -179,7 +177,7 @@ class Equipamento extends CI_controller
                 $objHelperFile = new File();
 
                 // Criando o caminho com id do usuario
-                $caminho = "./storage/funcionario/".$id."/perfil";
+                $caminho = "./storage/equipamento/".$id."/imagem";
 
                 // Verifica se já existe
                 if(!is_dir($caminho))
@@ -197,17 +195,17 @@ class Equipamento extends CI_controller
 
                 if ($arquivo != null && $arquivo != false)
                 {
-                    $update ["perfil"] = $arquivo;
+                    $update ["imagem"] = $arquivo;
                 }
 
             }
 
-            $objeto = $this->objModelFuncionario->update($update,["id_funcionario" => $id]);
+            $objeto = $this->objModelEquipamento->update($update,["id_equipamento" => $id]);
 
             $dados = [
                 "code" => 200,
                 "tipo" => true,
-                "mensagem" => "Funcionario alterado com sucesso",
+                "mensagem" => "Equipamento alterado com sucesso",
                 "objeto" => $objeto
             ];
 
@@ -243,13 +241,13 @@ class Equipamento extends CI_controller
         // Verificando se enviou POST
         if($id != null && $id !=0 && $id != "")
         {
-            // Verifica se o funcionario existe
-            $busca = $this->objModelFuncionario->get(['id_funcionario' => $id]);
+            // Verifica se o equipamento existe
+            $busca = $this->objModelEquipamento->get(['id_equipamento' => $id]);
 
             if($busca->rowCount() > 0)
             {
                 // Deletando funcinario
-                $delete = $this->objModelFuncionario->delete(['id_funcionario' => $id]);
+                $delete = $this->objModelEquipamento->delete(['id_equipamento' => $id]);
 
                 if ($delete != null)
                 {
@@ -264,7 +262,7 @@ class Equipamento extends CI_controller
                 {
                     $dados = [
                         "tipo" => false,
-                        "mensagem" => "Erro ao excluir funcionario",
+                        "mensagem" => "Erro ao excluir equipamento",
                         "objeto" => null
                     ];
                 }// Erro ao deletar
@@ -273,7 +271,7 @@ class Equipamento extends CI_controller
             {
                 $dados = [
                     "tipo" => false,
-                    "mensagem" => "Funcionario não encontrado",
+                    "mensagem" => "Equipamento não encontrado",
                     "objeto" => null
                 ];
             }

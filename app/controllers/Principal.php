@@ -576,11 +576,18 @@ class Principal extends CI_controller
         $usuario->perfil = $perfil;
 
         // Buscando o usuario selecionado
-        $equipamentos = $this->objModelEquipamentos->get(["id_equipamento" => $id])->fetch(\PDO::FETCH_OBJ);
+        $equipamento = $this->objModelEquipamentos->get(["id_equipamento" => $id])->fetch(\PDO::FETCH_OBJ);
+
+        $buscaCategoria = $this->objModelCategoria->get(["id_categoria" => $equipamento->id_categoria])->fetch(\PDO::FETCH_OBJ);
+        $equipamento->nome_categoria = $buscaCategoria->nome;
+
+        // Buscando todas as categorias
+        $categorias = $this->objModelCategoria->get()->fetchAll(\PDO::FETCH_OBJ);
 
         $dados = [
             "usuario" => $usuario,
-            "equipamentos" => $equipamentos,
+            "equipamento" => $equipamento,
+            "categorias" => $categorias,
             "js" => [
                 "pages" => ["dropfy"],
                 "modulos" => ["Equipamento"]
