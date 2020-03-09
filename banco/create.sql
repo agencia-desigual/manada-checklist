@@ -101,6 +101,7 @@ CREATE TABLE projeto(
     data_ida DATE,
     data_volta DATE,
     data_cadastro TIMESTAMP,
+    status INT NOT NULL,
     PRIMARY KEY (id_projeto),
     FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
     FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)

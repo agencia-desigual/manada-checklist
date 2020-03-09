@@ -14,6 +14,7 @@ use Model\Cliente;
 use Model\Equipamento;
 use Model\Funcionario;
 use Model\Projeto;
+use Model\ProjetoEquipamento;
 use Model\Usuario;
 use Sistema\Controller as CI_controller;
 
@@ -28,6 +29,7 @@ class Principal extends CI_controller
     private $objModelEquipamentos;
     private $objModelProjetos;
     private $objModelCategoria;
+    private $objProjetoEquipamento;
 
     // Método construtor
     function __construct()
@@ -42,6 +44,7 @@ class Principal extends CI_controller
         $this->objModelEquipamentos = new Equipamento();
         $this->objModelProjetos = new Projeto();
         $this->objModelCategoria = new Categoria();
+        $this->objProjetoEquipamento = new ProjetoEquipamento();
     }
 
     /**
@@ -620,13 +623,157 @@ class Principal extends CI_controller
         //Pegando o link da img
         $usuario->perfil = $perfil;
 
+        // Buscando todos projetos
+        $projetos = $this->objModelProjetos->get()->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($projetos as $projeto)
+        {
+            // Buscando o cliente
+            $buscaCliente = $this->objModelClientes->get(["id_cliente" => $projeto->id_cliente])->fetch(\PDO::FETCH_OBJ);
+            $projeto->nome_cliente = $buscaCliente->nome;
+
+            // Buscando o responsavél
+            $buscaUsuario = $this->objModelUsuario->get(["id_usuario" => $projeto->id_usuario])->fetch(\PDO::FETCH_OBJ);
+            $projeto->responsavel = $buscaUsuario->nome;
+
+            // Padrão de data e hora
+            $projeto->data_ida = date("d/m/Y", strtotime($projeto->data_ida));
+            $projeto->data_volta = date("d/m/Y", strtotime($projeto->data_volta));
+            $projeto->horario = date("H:i", strtotime($projeto->horario));
+        }
+
         $dados = [
-            "usuario" => $usuario
+            "usuario" => $usuario,
+            "projetos" => $projetos,
+            "js" => [
+                "pages" => ["datatables"],
+                "modulos" => ["Projeto"]
+            ]
         ];
 
         $this->view("painel/projetos/listar",$dados);
     }
 
+
+
+    /**
+     * Método responsável por carregar a view de adicionar
+     * um projeto
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function projetoAdicionar()
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+        $cont = 0;
+
+        // Buscando todos os clientes
+        $clientes = $this->objModelClientes->get()->fetchAll(\PDO::FETCH_OBJ);
+
+        // Buscando todos os equipamentos
+        $equipamentos = $this->objModelEquipamentos->get()->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($equipamentos as $equipamento)
+        {
+            $buscaCategoria = $this->objModelCategoria->get(['id_categoria' => $equipamento->id_categoria])->fetch(\PDO::FETCH_OBJ);
+            $equipamento->nome_categoria = $buscaCategoria->nome;
+
+            // Buscando o equipamento em outros projetos
+            $equipamentoProjetos = $this->objProjetoEquipamento->get(["id_equipamento" => $equipamento->id_equipamento])->fetch(\PDO::FETCH_OBJ);
+
+            // Verificando se achou o equipamento
+            if(!empty($equipamentoProjetos)) {
+
+                // Buscando o projeto
+                $buscaProjeto = $this->objModelProjetos->get(['id_projeto' => $equipamentoProjetos->id_projeto])->fetch(\PDO::FETCH_OBJ);
+                if ($buscaProjeto->status == 1) {
+
+                    // Verificando se é o mesmo equipamento para fazer a subtração
+                    if ($equipamento->id_equipamento == $equipamentoProjetos->id_equipamento) {
+                        $equipamento->quantidade -= $equipamentoProjetos->quantidade;
+
+                        // Caso zerar a quantidade do equipamento, remove ele da lista
+                        if ($equipamento->quantidade <= 0) {
+                            unset($equipamentos[$cont]);
+                        }
+
+                    }
+
+                }
+            }
+
+            $cont++;
+        }
+
+        // Buscando todos os funcionarios
+        $funcionarios = $this->objModelFuncionarios->get(["status" => true])->fetchAll(\PDO::FETCH_OBJ);
+
+        $dados = [
+            "usuario" => $usuario,
+            "equipamentos" => $equipamentos,
+            "funcionarios" => $funcionarios,
+            "clientes" => $clientes,
+            "js" => [
+                "modulos" => ["Projeto"]
+            ]
+        ];
+
+        $this->view("painel/projetos/adicionar",$dados);
+    }
+
+
+
+    /**
+     * Método responsável por carregar a view de editar
+     * um projeto
+     * -----------------------------------------------------
+     * @author edilson-pereira
+     * -----------------------------------------------------
+     */
+    public function projetoEditar($id)
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        // Buscando o usuario selecionado
+        $equipamento = $this->objModelEquipamentos->get(["id_equipamento" => $id])->fetch(\PDO::FETCH_OBJ);
+
+        $buscaCategoria = $this->objModelCategoria->get(["id_categoria" => $equipamento->id_categoria])->fetch(\PDO::FETCH_OBJ);
+        $equipamento->nome_categoria = $buscaCategoria->nome;
+
+        // Buscando todas as categorias
+        $categorias = $this->objModelCategoria->get()->fetchAll(\PDO::FETCH_OBJ);
+
+        $dados = [
+            "usuario" => $usuario,
+            "equipamento" => $equipamento,
+            "categorias" => $categorias,
+            "js" => [
+                "pages" => ["dropfy"],
+                "modulos" => ["Equipamento"]
+            ]
+        ];
+
+        $this->view("painel/equipamentos/editar",$dados);
+    }
 
 
     /**

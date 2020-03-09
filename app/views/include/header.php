@@ -16,6 +16,10 @@
     <link href="<?= BASE_URL ?>assets/theme/css/icons.css" rel="stylesheet" type="text/css">
     <link href="<?= BASE_URL ?>assets/theme/css/style.css" rel="stylesheet" type="text/css">
 
+    <!-- Plugins css -->
+    <link href="<?= BASE_URL ?>assets/theme/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <link href="<?= BASE_URL ?>assets/theme/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
     <!-- Autoload CSS ================================================= -->
     <?php $this->view("autoload/css") ?>
 </head>

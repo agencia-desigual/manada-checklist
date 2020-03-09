@@ -36,6 +36,12 @@ $Rotas->onGroup("api-equipamento","POST","insert","insert");
 $Rotas->onGroup("api-equipamento","POST","delete/{p}","delete");
 $Rotas->onGroup("api-equipamento","POST","update/{p}","update");
 
+// -- Grupo Projeto
+$Rotas->group("api-projeto","api/projeto","Api\Projeto");
+$Rotas->onGroup("api-projeto","POST","insert","insert");
+$Rotas->onGroup("api-projeto","POST","delete/{p}","delete");
+$Rotas->onGroup("api-projeto","POST","update/{p}","update");
+
 // -- Rotas sem grupo
 $Rotas->on("GET","login","Principal::login");
 $Rotas->on("GET","sair","Principal::sair");
@@ -62,6 +68,11 @@ $Rotas->on("GET","empresa/editar/{p}","Principal::empresaEditar");
 $Rotas->on("GET","equipamentos","Principal::equipamentos");
 $Rotas->on("GET","equipamento/adicionar","Principal::equipamentoAdicionar");
 $Rotas->on("GET","equipamento/editar/{p}","Principal::equipamentoEditar");
+
+// -- Rotas projeto
+$Rotas->on("GET","projetos","Principal::equipamentos");
+$Rotas->on("GET","projeto/adicionar","Principal::projetoAdicionar");
+$Rotas->on("GET","projeto/editar/{p}","Principal::projetoEditar");
 
 // -- Rotas projetos
 $Rotas->on("GET","projetos","Principal::projetos");
