@@ -1,21 +1,120 @@
 import Global from "../global.js"
 
 
-/***
- * Ação responsável por receber os dados do formulário
- * e enviar os dados para API
- */
-$(".quantidadeCheck").on("change", function(){
+$("#adicionarProjeto").on("submit", function(){
 
-alert("sadasd");
+    // Não carrega
+    event.preventDefault();
 
+    // Trava o formulário
+    $(this).addClass("bloqueiaForm");
+
+    // Recupera os dados do formulário
+    var form = new FormData(this);
+
+    // Url
+    var url = Global.config.urlApi + "projeto/insert";
+
+    // Envia
+    Global.enviaApi("POST", url, form)
+        .then((data) => {
+
+            // Informa que deu cert
+            Global.setSuccess(data.mensagem);
+
+            setTimeout(() => {
+                // Redireciona
+                location.href = Global.config.url + "projeto/imprimir/" + data.objeto;
+            }, 1500);
+        })
+        .catch(() => {
+            // Debloqueia o form
+            $(this).removeClass("bloqueiaForm");
+        });
+
+    // Não carrega mesmo
+    return false;
+});
+
+
+$(".apagarProjeto").on("click", function(){
+
+    // Recupera o id
+    var id = $(this).data("id");
+
+    // Url
+    var url = Global.config.urlApi + "projeto/delete/" + id;
+
+    // Verifica se realmente deseja deletar
+    Swal.fire({
+        title: 'Deletar Projeto',
+        text: 'Deseja realmente deletar o projeto?',
+        type: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, delete!'
+    }).then((result) => {
+        if (result.value)
+        {
+            // Realiza a solicitação
+            Global.enviaApi("POST", url, null)
+                .then((data) => {
+
+                    // Avisa que deu certo
+                    Global.setSuccess(data.mensagem);
+
+                    // Remove o item da tabela
+                    $('.js-exportable')
+                        .DataTable()
+                        .row("#projeto-" + id)
+                        .remove()
+                        .draw(false);
+
+                });
+        }
+    });
+
+    // Não carrega mesmo
+    return false;
 
 });
 
 
-// Retorno para os demais arquivos
-export default (() => {
+$("#alterarProjeto").on("submit", function(){
 
-    return null;
+    // Não atualiza
+    event.preventDefault();
 
-})();
+    // Bloqueia o form
+    $(this).addClass("bloqueiaForm");
+
+    // Recupera os dados
+    var form = new FormData(this);
+
+    // Recupera o id
+    var id = $(this).data("id");
+
+    // monta a url
+    var url = Global.config.urlApi + "projeto/update/" + id;
+
+    // Altera
+    Global.enviaApi("POST", url, form)
+        .then((data) => {
+
+            // Avisa que deu certo
+            Global.setSuccess(data.mensagem);
+
+            // Remove o bloqueio
+            $(this).removeClass("bloqueiaForm");
+        })
+        .catch(() => {
+
+            // Remove o bloqueio
+            $(this).removeClass("bloqueiaForm");
+        });
+
+    // Não atualiza mesmo
+    return false;
+});

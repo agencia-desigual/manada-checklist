@@ -44,6 +44,7 @@ class Apoio
         return $numero . $array[$cont];
     }
 
+
     /**
      * Método responsável por formatar a url certa
      * da imagem de perfil do usuário
@@ -99,5 +100,6 @@ class Apoio
         return $retorno;
 
     } // End >> fun::configuraPerfil()
+
 
 } // End >> Class::Apoio()

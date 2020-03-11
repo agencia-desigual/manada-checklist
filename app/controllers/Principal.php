@@ -58,15 +58,17 @@ class Principal extends CI_controller
         // Redirecionamento Login
         $this->verificaLogin();
 
+        // Variaveis
+        $buscaUsuario = null;
+        $buscaCliente = null;
+        $buscaCategoria = null;
+
         // Pegando o email do usuario
         $email = $_SESSION['usuario'];
 
         // Buscando o usuario por email
         $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
-        $perfil = $this->objHelperApoio->configuraImagem($usuario);
-        //Pegando o link da img
-        $usuario->perfil = $perfil;
-
+        $usuario->perfil = $this->objHelperApoio->configuraImagem($usuario);
 
 
         // CONTADORES =========================================================
@@ -96,24 +98,24 @@ class Principal extends CI_controller
 
         $projetos = $this->objModelProjetos->get(null,"id_projeto DESC",null,null)->fetch(\PDO::FETCH_OBJ);
 
-        // Usuário responsavel
-        $buscaUsuario = $this->objModelUsuario->get(['id_usuario' => $projetos->id_usuario])->fetch(\PDO::FETCH_OBJ);
-        $projetos->nome_usuario = $buscaUsuario->nome;
+        if(!empty($projetos))
+        {
+            // Usuário responsavel
+            $buscaUsuario = $this->objModelUsuario->get(['id_usuario' => $projetos->id_usuario])->fetch(\PDO::FETCH_OBJ);
+            $projetos->nome_usuario = $buscaUsuario->nome;
 
-        // Cliente responsavel
-        $buscaCliente = $this->objModelClientes->get(['id_cliente' => $projetos->id_cliente])->fetch(\PDO::FETCH_OBJ);
-        $projetos->nome_cliente = $buscaCliente->nome;
+            // Cliente responsavel
+            $buscaCliente = $this->objModelClientes->get(['id_cliente' => $projetos->id_cliente])->fetch(\PDO::FETCH_OBJ);
+            $projetos->nome_cliente = $buscaCliente->nome;
 
-        // Data
-        $projetos->data_ida = date("d/m/Y", strtotime($projetos->data_ida));
-        $projetos->data_volta = date("d/m/Y", strtotime($projetos->data_volta));
-        $projetos->horario = date("H:i", strtotime($projetos->horario));
-
-//        $this->debug($projetos);
+            // Data
+            $projetos->data_ida = date("d/m/Y", strtotime($projetos->data_ida));
+            $projetos->data_volta = date("d/m/Y", strtotime($projetos->data_volta));
+            $projetos->horario = date("H:i", strtotime($projetos->horario));
+        }
 
 
         // FIM LISTAS =====================================================
-
 
 
         $dados = [
@@ -620,11 +622,13 @@ class Principal extends CI_controller
         // Buscando o usuario por email
         $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
         $perfil = $this->objHelperApoio->configuraImagem($usuario);
+
         //Pegando o link da img
         $usuario->perfil = $perfil;
 
         // Buscando todos projetos
         $projetos = $this->objModelProjetos->get()->fetchAll(\PDO::FETCH_OBJ);
+
         foreach ($projetos as $projeto)
         {
             // Buscando o cliente
@@ -634,6 +638,15 @@ class Principal extends CI_controller
             // Buscando o responsavél
             $buscaUsuario = $this->objModelUsuario->get(["id_usuario" => $projeto->id_usuario])->fetch(\PDO::FETCH_OBJ);
             $projeto->responsavel = $buscaUsuario->nome;
+
+            if($projeto->data_volta > date("Y-m-d"))
+            {
+                $projeto->status = true;
+            }
+            else
+            {
+                $projeto->status = false;
+            }
 
             // Padrão de data e hora
             $projeto->data_ida = date("d/m/Y", strtotime($projeto->data_ida));
@@ -652,6 +665,8 @@ class Principal extends CI_controller
 
         $this->view("painel/projetos/listar",$dados);
     }
+
+
 
 
 
@@ -681,21 +696,33 @@ class Principal extends CI_controller
         $clientes = $this->objModelClientes->get()->fetchAll(\PDO::FETCH_OBJ);
 
         // Buscando todos os equipamentos
-        $equipamentos = $this->objModelEquipamentos->get()->fetchAll(\PDO::FETCH_OBJ);
+        $equipamentos = $this->objModelEquipamentos
+            ->get()
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+
         foreach ($equipamentos as $equipamento)
         {
             $buscaCategoria = $this->objModelCategoria->get(['id_categoria' => $equipamento->id_categoria])->fetch(\PDO::FETCH_OBJ);
             $equipamento->nome_categoria = $buscaCategoria->nome;
 
             // Buscando o equipamento em outros projetos
-            $equipamentoProjetos = $this->objProjetoEquipamento->get(["id_equipamento" => $equipamento->id_equipamento])->fetch(\PDO::FETCH_OBJ);
+            $equipamentoProjetos = $this->objProjetoEquipamento
+                ->get(["id_equipamento" => $equipamento->id_equipamento])
+                ->fetch(\PDO::FETCH_OBJ);
 
             // Verificando se achou o equipamento
             if(!empty($equipamentoProjetos)) {
 
                 // Buscando o projeto
-                $buscaProjeto = $this->objModelProjetos->get(['id_projeto' => $equipamentoProjetos->id_projeto])->fetch(\PDO::FETCH_OBJ);
-                if ($buscaProjeto->status == 1) {
+                $buscaProjeto = $this->objModelProjetos
+                    ->get(['id_projeto' => $equipamentoProjetos->id_projeto])
+                    ->fetch(\PDO::FETCH_OBJ);
+
+
+                // Verifica se o projeto está ativo
+                if ($buscaProjeto->data_volta > date("Y-m-d"))
+                {
 
                     // Verificando se é o mesmo equipamento para fazer a subtração
                     if ($equipamento->id_equipamento == $equipamentoProjetos->id_equipamento) {
@@ -732,6 +759,8 @@ class Principal extends CI_controller
 
 
 
+
+
     /**
      * Método responsável por carregar a view de editar
      * um projeto
@@ -750,29 +779,34 @@ class Principal extends CI_controller
         // Buscando o usuario por email
         $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
         $perfil = $this->objHelperApoio->configuraImagem($usuario);
+
         //Pegando o link da img
         $usuario->perfil = $perfil;
 
-        // Buscando o usuario selecionado
-        $equipamento = $this->objModelEquipamentos->get(["id_equipamento" => $id])->fetch(\PDO::FETCH_OBJ);
+        // Busca o projeto
+        $projeto = $this->objModelProjetos
+            ->get(["id_projeto" => $id])
+            ->fetch(\PDO::FETCH_OBJ);
 
-        $buscaCategoria = $this->objModelCategoria->get(["id_categoria" => $equipamento->id_categoria])->fetch(\PDO::FETCH_OBJ);
-        $equipamento->nome_categoria = $buscaCategoria->nome;
+        $clientes = $this->objModelClientes
+            ->get()
+            ->fetchAll(\PDO::FETCH_OBJ);
 
-        // Buscando todas as categorias
-        $categorias = $this->objModelCategoria->get()->fetchAll(\PDO::FETCH_OBJ);
+        $responsavel = $this->objModelUsuario
+            ->get(["id_usuario" => $projeto->id_usuario])
+            ->fetch(\PDO::FETCH_OBJ);
 
         $dados = [
             "usuario" => $usuario,
-            "equipamento" => $equipamento,
-            "categorias" => $categorias,
+            "clientes" => $clientes,
+            "projeto" => $projeto,
+            "responsavel" => $responsavel,
             "js" => [
-                "pages" => ["dropfy"],
-                "modulos" => ["Equipamento"]
+                "modulos" => ["Projeto"]
             ]
         ];
 
-        $this->view("painel/equipamentos/editar",$dados);
+        $this->view("painel/projetos/editar",$dados);
     }
 
 

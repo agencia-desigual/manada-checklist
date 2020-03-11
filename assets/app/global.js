@@ -2,10 +2,10 @@ import Session from "./main/Session.js"
 
 // Dados importantes
 var Dados = {
-    "url": "http://192.168.0.179/git/manada-checklist/",
-    // "url": "http://localhost/git/manada-checklist/",
-    "urlApi": "http://192.168.0.179/git/manada-checklist/api/",
-    // "urlApi": "http://localhost/git/manada-checklist/api/",
+    // "url": "http://192.168.0.179/git/manada-checklist/",
+    "url": "http://localhost/git/manada-checklist/",
+    // "urlApi": "http://192.168.0.179/git/manada-checklist/api/",
+    "urlApi": "http://localhost/git/manada-checklist/api/",
 }
 
 

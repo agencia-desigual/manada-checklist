@@ -42,6 +42,11 @@
         margin-top: 10px;
         padding-bottom: 15px;
     }
+
+    .custom-control.semPad
+    {
+        padding-left: 0px;
+    }
 </style>
 
 <div class="wrapper">
@@ -96,67 +101,87 @@
                             </div>
 
                             <div class="row mt-1 mb-1">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Cliente</label>
                                         <div>
-                                            <select class="form-control">
-                                                <option value="" selected disabled>Selecione</option>
+                                            <select name="id_cliente" required class="form-control">
+                                                <option selected disabled>Selecione</option>
                                                 <?php foreach ($clientes as $cliente) : ?>
-                                                    <option value="<?= $cliente->id_clinte ?>"><?= $cliente->nome ?></option>
+                                                    <option value="<?= $cliente->id_cliente ?>"><?= $cliente->nome ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Local</label>
+                                        <input type="text" placeholder="Ex: Estúdio na Desigual" name="local" required class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-1 mb-1">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Data de Ida e Volta</label>
                                         <div>
                                             <div class="input-daterange input-group" id="date-range">
-                                                <input type="text" class="form-control" name="data_ida" placeholder="Data de Ida">
-                                                <input type="text" class="form-control" name="data_volta" placeholder="Data de Volta">
+                                                <input type="text" required class="form-control" name="data_ida" placeholder="Data de Ida">
+                                                <input type="text" required class="form-control" name="data_volta" placeholder="Data de Volta">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Horário</label>
                                         <div>
-                                            <input name="horario" class="form-control" type="time" value="13:45:00" id="example-time-input">
+                                            <input name="horario" required class="form-control" type="time" value="13:45:00" id="example-time-input">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row mt-1 mb-1">
                                 <div class="col-md-12">
-                                    <div class="card-body">
+                                    <div class="form-group">
+                                        <label>Observações</label>
+                                        <textarea name="observacoes" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        <h4 class="mt-0 header-title">Accordion example</h4>
-                                        <p class="sub-title">Extend the default collapse behavior to create an accordion.</p>
 
-                                        <div id="accordion">
-                                            <!-- Equipamentos -->
-                                            <div class="card mb-0">
-                                                <div class="card-header" id="headingOne">
-                                                    <h5 class="mb-0 mt-0 font-14">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-dark">
-                                                            <div class="mini-stat-icon float-left">
-                                                                <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-camera-retro bg-danger text-white"></i>
-                                                            </div> <p style="color: #FC5454 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px">Equipamentos</p>
-                                                        </a>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                                                    <div class="card-body">
-                                                        <?php foreach ($equipamentos as $equipamento) : ?>
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input name="equipamentos[]" value="<?= $equipamento->id_equipamento ?>" type="checkbox" class="custom-control-input" id="customCheckEquipamento<?= $equipamento->id_equipamento ?>" data-parsley-multiple="groups">
-                                                                <label class="custom-control-label" for="customCheckEquipamento<?= $equipamento->id_equipamento ?>"><?= $equipamento->nome ?> / <?= $equipamento->nome_categoria ?></label>
-                                                                <div class="float-right">
-                                                                    <select name="quantidade-" class="form-control">
+                            <div class="row pt-4">
+                                <div class="col-md-12">
+                                    <div id="accordion">
+                                        <!-- Equipamentos -->
+                                        <div class="card mb-0">
+                                            <div class="card-header" id="headingOne">
+                                                <h5 class="mb-0 mt-0 font-14">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-dark">
+                                                        <div class="mini-stat-icon float-left">
+                                                            <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-camera-retro bg-danger text-white"></i>
+                                                        </div> <p style="color: #FC5454 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px">Equipamentos</p>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <?php foreach ($equipamentos as $equipamento) : ?>
+                                                        <div class="custom-control semPad custom-checkbox">
+                                                            <div class="row">
+                                                                <div class="col-md-8 pt-3">
+                                                                    <!-- <input type="checkbox" class="custom-control-input" id="customCheckEquipamento<?= $equipamento->id_equipamento ?>" data-parsley-multiple="groups"> -->
+                                                                    <label><?= $equipamento->nome ?> / <?= $equipamento->nome_categoria ?></label>
+                                                                </div>
+
+                                                                <div class="col-md-4 pt-2">
+                                                                    <select name="equipamentos[<?= $equipamento->id_equipamento ?>]" class="form-control">
                                                                         <option value="0" selected disabled>Quantidade</option>
                                                                         <?php for ($i=1; $i<=$equipamento->quantidade; $i++) : ?>
                                                                             <option class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
@@ -164,44 +189,46 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                        <?php endforeach; ?>
-                                                    </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <!-- Funcionarios -->
-                                            <div class="card mb-0">
-                                                <div class="card-header" id="headingTwo">
-                                                    <h5 class="mb-0 mt-0 font-14">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne" class="text-dark">
-                                                            <div class="mini-stat-icon float-left">
-                                                                <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-user-friends bg-primary text-white"></i>
-                                                            </div> <p style="color: #6e7ab7 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px">Funcionários</p>
-                                                        </a>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                                                    <div class="card-body">
-                                                        <div class="form-group">
-                                                            <div>
-                                                                <?php foreach ($funcionarios as $funcionario) : ?>
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input name="funcionarios[]" value="<?= $funcionario->id_funcionario ?>" type="checkbox" class="custom-control-input" id="customCheckFuncionario<?= $funcionario->id_funcionario ?>" data-parsley-multiple="groups">
-                                                                        <label class="custom-control-label" for="customCheckFuncionario<?= $funcionario->id_funcionario ?>"><?= $funcionario->nome ?></label>
-                                                                    </div>
-                                                                <?php endforeach; ?>
-                                                            </div>
+                                        <!-- Funcionarios -->
+                                        <div class="card mb-0">
+                                            <div class="card-header" id="headingTwo">
+                                                <h5 class="mb-0 mt-0 font-14">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne" class="text-dark">
+                                                        <div class="mini-stat-icon float-left">
+                                                            <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-user-friends bg-primary text-white"></i>
+                                                        </div> <p style="color: #6e7ab7 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px">Funcionários</p>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <div>
+                                                            <?php foreach ($funcionarios as $funcionario) : ?>
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input name="funcionarios[]" value="<?= $funcionario->id_funcionario ?>" type="checkbox" class="custom-control-input" id="customCheckFuncionario<?= $funcionario->id_funcionario ?>" data-parsley-multiple="groups">
+                                                                    <label class="custom-control-label" for="customCheckFuncionario<?= $funcionario->id_funcionario ?>"><?= $funcionario->nome ?></label>
+                                                                </div>
+                                                            <?php endforeach; ?>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group m-b-0">
+
+
+
+                            <div class="form-group m-b-0 mt-4">
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-primary waves-effect waves-light">
                                         Cadastrar

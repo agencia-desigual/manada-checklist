@@ -73,6 +73,7 @@ $Rotas->on("GET","equipamento/editar/{p}","Principal::equipamentoEditar");
 $Rotas->on("GET","projetos","Principal::equipamentos");
 $Rotas->on("GET","projeto/adicionar","Principal::projetoAdicionar");
 $Rotas->on("GET","projeto/editar/{p}","Principal::projetoEditar");
+$Rotas->on("GET","projeto/imprimir/{p}","Principal::projetoImprimir");
 
 // -- Rotas projetos
 $Rotas->on("GET","projetos","Principal::projetos");
