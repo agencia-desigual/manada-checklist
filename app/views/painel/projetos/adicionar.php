@@ -156,7 +156,7 @@
                                                                 <input name="equipamentos[]" value="<?= $equipamento->id_equipamento ?>" type="checkbox" class="custom-control-input" id="customCheckEquipamento<?= $equipamento->id_equipamento ?>" data-parsley-multiple="groups">
                                                                 <label class="custom-control-label" for="customCheckEquipamento<?= $equipamento->id_equipamento ?>"><?= $equipamento->nome ?> / <?= $equipamento->nome_categoria ?></label>
                                                                 <div class="float-right">
-                                                                    <select class="form-control">
+                                                                    <select name="quantidade-" class="form-control">
                                                                         <option value="0" selected disabled>Quantidade</option>
                                                                         <?php for ($i=1; $i<=$equipamento->quantidade; $i++) : ?>
                                                                             <option class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
