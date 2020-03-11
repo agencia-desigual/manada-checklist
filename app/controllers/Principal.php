@@ -15,6 +15,7 @@ use Model\Equipamento;
 use Model\Funcionario;
 use Model\Projeto;
 use Model\ProjetoEquipamento;
+use Model\ProjetoFuncionario;
 use Model\Usuario;
 use Sistema\Controller as CI_controller;
 
@@ -807,6 +808,83 @@ class Principal extends CI_controller
         ];
 
         $this->view("painel/projetos/editar",$dados);
+    }
+
+
+    public function projetoImprimir($id)
+    {
+        // Redirecionamento Login
+        $this->verificaLogin();
+
+        $objProjetoFuncionario = new ProjetoFuncionario();
+
+        // Pegando o email do usuario
+        $email = $_SESSION['usuario'];
+
+        // Buscando o usuario por email
+        $usuario = $this->objModelUsuario->get(["email" => $email])->fetch(\PDO::FETCH_OBJ);
+        $perfil = $this->objHelperApoio->configuraImagem($usuario);
+
+        //Pegando o link da img
+        $usuario->perfil = $perfil;
+
+        // Busca o projeto
+        $projeto = $this->objModelProjetos
+            ->get(["id_projeto" => $id])
+            ->fetch(\PDO::FETCH_OBJ);
+
+        $cliente = $this->objModelClientes
+            ->get(["id_cliente" => $projeto->id_cliente])
+            ->fetch(\PDO::FETCH_OBJ);
+
+        $responsavel = $this->objModelUsuario
+            ->get(["id_usuario" => $projeto->id_usuario])
+            ->fetch(\PDO::FETCH_OBJ);
+
+        $equipamentos = $this->objProjetoEquipamento
+            ->get(["id_projeto" => $id])
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        $total = 0;
+
+        foreach ($equipamentos as $eq)
+        {
+            $eq->equipamento = $this->objModelEquipamentos
+                ->get(["id_equipamento" => $eq->id_equipamento])
+                ->fetch(\PDO::FETCH_OBJ);
+
+            $total += $eq->quantidade;
+
+            $eq->categoria = $this->objModelCategoria
+                ->get(["id_categoria" => $eq->equipamento->id_categoria])
+                ->fetch(\PDO::FETCH_OBJ);
+        }
+
+        $funcionarios = $objProjetoFuncionario
+            ->get(["id_projeto" => $id])
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        foreach ($funcionarios as $fun)
+        {
+            $fun->funcionario = $this->objModelFuncionarios
+                ->get(["id_funcionario" => $fun->id_funcionario])
+                ->fetch(\PDO::FETCH_OBJ);
+        }
+
+        $dados = [
+            "usuario" => $usuario,
+            "cliente" => $cliente,
+            "projeto" => $projeto,
+            "responsavel" => $responsavel,
+            "equipamentos" => $equipamentos,
+            "funcionarios" => $funcionarios,
+            "total" => $total,
+            "js" => [
+                "modulos" => ["Projeto"]
+            ]
+        ];
+
+        $this->view("painel/projetos/imprimir",$dados);
     }
 
 
