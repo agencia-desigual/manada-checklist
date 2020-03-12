@@ -101,17 +101,22 @@ class Projeto extends Controller
             {
                 if(!empty($post["funcionarios"]))
                 {
-                    // Percorre os funcionarios
-                    foreach ($post["funcionarios"] as $fun)
+                    // Percorre os equipamentos
+                    foreach ($post["funcionarios"] as $id => $funcao)
                     {
-                        // Monta o array
-                        $salvaFun = [
-                            "id_projeto" => $projeto,
-                            "id_funcionario" => $fun
-                        ];
+                        // Verifica se a quantidade é maior que 0
+                        if($funcao != 0 || $funcao != "0")
+                        {
+                            // Array
+                            $salvaFun = [
+                                "id_projeto" => $projeto,
+                                "id_funcionario" => $id,
+                                "funcao" => $funcao
+                            ];
 
-                        // Vincula o funcionario
-                        $this->objModelProjetoFuncionario->insert($salvaFun);
+                            // Vincula o funcionario
+                            $this->objModelProjetoFuncionario->insert($salvaFun);
+                        }
                     }
                 }
 

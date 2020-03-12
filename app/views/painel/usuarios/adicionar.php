@@ -76,16 +76,6 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-
-                                <label>Status</label>
-                                <div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input name="status" type="checkbox" class="custom-control-input" id="customCheck1" checked>
-                                        <label class="custom-control-label" for="customCheck1">Ativo?</label>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="form-group m-b-0">
                                 <div class="float-right">

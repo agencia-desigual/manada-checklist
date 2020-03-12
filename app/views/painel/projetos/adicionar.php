@@ -170,27 +170,53 @@
                                                     </a>
                                                 </h5>
                                             </div>
+
                                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                                                 <div class="card-body">
-                                                    <?php foreach ($equipamentos as $equipamento) : ?>
-                                                        <div class="custom-control semPad custom-checkbox">
-                                                            <div class="row">
-                                                                <div class="col-md-8 pt-3">
-                                                                    <!-- <input type="checkbox" class="custom-control-input" id="customCheckEquipamento<?= $equipamento->id_equipamento ?>" data-parsley-multiple="groups"> -->
-                                                                    <label><?= $equipamento->nome ?> / <?= $equipamento->nome_categoria ?></label>
-                                                                </div>
+                                                    <div id="accordion2">
+                                                        <?php $cont = 1; ?>
+                                                        <?php foreach ($categorias as $cat) : ?>
+                                                            <?php if(!empty($cat->equipamentos)): ?>
+                                                                <!-- Equipamentos -->
+                                                                <div class="card mb-0">
+                                                                    <div class="card-header" id="heading<?= $cont ?>">
+                                                                        <h5 class="mb-0 mt-0 font-14">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $cont ?>" aria-expanded="true" aria-controls="collapse<?= $cont ?>" class="text-dark">
+                                                                                <div class="mini-stat-icon float-left">
+                                                                                    <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-list bg-danger text-white"></i>
+                                                                                </div> <p style="color: #FC5454 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px"><?= $cat->nome; ?></p>
+                                                                            </a>
+                                                                        </h5>
+                                                                    </div>
 
-                                                                <div class="col-md-4 pt-2">
-                                                                    <select name="equipamentos[<?= $equipamento->id_equipamento ?>]" class="form-control">
-                                                                        <option value="0" selected disabled>Quantidade</option>
-                                                                        <?php for ($i=1; $i<=$equipamento->quantidade; $i++) : ?>
-                                                                            <option class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
-                                                                        <?php endfor; ?>
-                                                                    </select>
+                                                                    <div id="collapse<?= $cont; ?>" class="collapse <?php if($cont == 1){echo 'show';} ?>" aria-labelledby="heading<?= $cont; ?>" data-parent="#accordion2">
+                                                                        <div class="card-body">
+                                                                            <?php foreach ($cat->equipamentos as $equipamento) : ?>
+                                                                                <div class="custom-control semPad custom-checkbox">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-8 pt-3">
+                                                                                            <!-- <input type="checkbox" class="custom-control-input" id="customCheckEquipamento<?= $equipamento->id_equipamento ?>" data-parsley-multiple="groups"> -->
+                                                                                            <label><?= $equipamento->nome ?></label>
+                                                                                        </div>
+
+                                                                                        <div class="col-md-4 pt-2">
+                                                                                            <select name="equipamentos[<?= $equipamento->id_equipamento ?>]" class="form-control">
+                                                                                                <option value="0" selected disabled>Quantidade</option>
+                                                                                                <?php for ($i=1; $i<=$equipamento->quantidade; $i++) : ?>
+                                                                                                    <option class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
+                                                                                                <?php endfor; ?>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <?php endforeach; ?>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    <?php endforeach; ?>
+                                                                <?php $cont++; ?>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -211,9 +237,26 @@
                                                     <div class="form-group">
                                                         <div>
                                                             <?php foreach ($funcionarios as $funcionario) : ?>
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input name="funcionarios[]" value="<?= $funcionario->id_funcionario ?>" type="checkbox" class="custom-control-input" id="customCheckFuncionario<?= $funcionario->id_funcionario ?>" data-parsley-multiple="groups">
-                                                                    <label class="custom-control-label" for="customCheckFuncionario<?= $funcionario->id_funcionario ?>"><?= $funcionario->nome ?></label>
+                                                                <div class="custom-control semPad custom-checkbox">
+                                                                    <div class="row">
+                                                                        <div class="col-md-8 pt-3">
+                                                                            <label><?= $funcionario->nome ?></label>
+                                                                        </div>
+
+                                                                        <div class="col-md-4 pt-2">
+                                                                            <select name="funcionarios[<?= $funcionario->id_funcionario ?>]" class="form-control">
+                                                                                <option value="0" selected >Não Vai</option>
+                                                                                <option value="Fotográfo">Fotográfo</option>
+                                                                                <option value="Câmera 1">Câmera 1</option>
+                                                                                <option value="Câmera 2">Câmera 2</option>
+                                                                                <option value="Câmera 3">Câmera 3</option>
+                                                                                <option value="Áudio">Áudio</option>
+                                                                                <option value="Assistênte">Assistênte</option>
+                                                                                <option value="Direção">Direção</option>
+                                                                                <option value="Produção">Produção</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             <?php endforeach; ?>
                                                         </div>

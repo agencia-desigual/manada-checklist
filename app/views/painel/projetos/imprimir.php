@@ -61,34 +61,36 @@
         <!-- Tabela -->
         <div class="col-md-12">
 
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h4>Equipamentos <small><?= $total; ?></small></h4>
+            <?php foreach ($categorias as $cat): ?>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4><?= $cat->nome ?> <small><?= $cat->total; ?></small></h4>
 
-                    <div class="table-responsive">
-                        <table class="table table-condensed">
-                            <thead>
-                            <tr>
-                                <td><strong>Produto</strong></td>
-                                <td class="text-center"><strong>Categoria</strong></td>
-                                <td class="text-center"><strong>Quantidade</strong></td>
-                                <td class="text-right"><strong>Devolvido</strong></td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($equipamentos as $eq): ?>
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
                                 <tr>
-                                    <td><?= $eq->equipamento->nome; ?></td>
-                                    <td class="text-center"><?= $eq->categoria->nome; ?></td>
-                                    <td class="text-center"><?= $eq->quantidade ?></td>
-                                    <td class="text-right"></td>
+                                    <td><strong>Produto</strong></td>
+                                    <td class="text-center"><strong>Quantidade</strong></td>
+                                    <td class="text-right"><strong>Ida</strong></td>
+                                    <td class="text-right"><strong>Devolvido</strong></td>
                                 </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($cat->produtos as $prod): ?>
+                                    <tr>
+                                        <td><?= $prod->nome; ?></td>
+                                        <td class="text-center"><?= $prod->quantidade ?></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
 
 
             <div class="panel panel-default">
@@ -100,14 +102,14 @@
                             <thead>
                             <tr>
                                 <td><strong>Nome</strong></td>
-                                <td class="text-center"><strong>Cargo</strong></td>
+                                <td class="text-center"><strong>Função</strong></td>
                             </tr>
                             </thead>
                             <tbody>
                             <?php foreach ($funcionarios as $fun): ?>
                                 <tr>
                                     <td><?= $fun->funcionario->nome; ?></td>
-                                    <td class="text-center"><?= $fun->funcionario->cargo; ?></td>
+                                    <td class="text-center"><?= $fun->funcao; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>

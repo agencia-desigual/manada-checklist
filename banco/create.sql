@@ -112,6 +112,7 @@ CREATE TABLE projeto_funcionario(
     id_projeto_funcionario INT NOT NULL AUTO_INCREMENT,
     id_projeto INT NOT NULL,
     id_funcionario INT NOT NULL,
+    funcao VARCHAR(150) NOT NULL,
     PRIMARY KEY (id_projeto_funcionario),
     FOREIGN KEY (id_projeto) REFERENCES projeto (id_projeto),
     FOREIGN KEY (id_funcionario) REFERENCES funcionario (id_funcionario)

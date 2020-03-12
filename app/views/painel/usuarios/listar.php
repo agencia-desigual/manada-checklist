@@ -37,7 +37,6 @@
                                     <th scope="col">NOME</th>
                                     <th scope="col">EMAIL</th>
                                     <th scope="col">PERFIL</th>
-                                    <th scope="col">STATUS</th>
                                     <th scope="col">AÇÕES</th>
 
                                 </tr>
@@ -48,11 +47,6 @@
                                         <td><?= $user->nome ?></td>
                                         <td><?= $user->email ?></td>
                                         <td><img src="<?= $user->perfil ?>" width="50px"></td>
-                                        <?php if ($user->status == 0) : ?>
-                                            <td><span class="badge badge-danger">Inativo</span></td>
-                                        <?php else : ?>
-                                            <td><span class="badge badge-success">Ativo</span></td>
-                                        <?php endif; ?>
                                         <td>
                                             <a href="#ExcluirUsuario" class="apagarUsuario" data-id="<?= $user->id_usuario ?>" > <i style="font-size: 25px;color: #b70a0a;margin-right: 15px;margin-left: -10px;" class="far fa-trash-alt"></i></a>
                                             <a href="<?= BASE_URL; ?>usuario/editar/<?= $user->id_usuario ?>"> <i style="font-size: 25px;color: #0a67b7;" class="far fa-edit"></i></a>
