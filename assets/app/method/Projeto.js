@@ -20,12 +20,12 @@ $("#adicionarProjeto").on("submit", function(){
         .then((data) => {
 
             // Informa que deu cert
-            Global.setSuccess(data.mensagem);
+            // Global.setSuccess(data.mensagem);
 
             setTimeout(() => {
                 // Redireciona
                 location.href = Global.config.url + "projeto/imprimir/" + data.objeto;
-            }, 1500);
+            }, 2000);
         })
         .catch(() => {
             // Debloqueia o form
@@ -104,10 +104,14 @@ $("#alterarProjeto").on("submit", function(){
         .then((data) => {
 
             // Avisa que deu certo
-            Global.setSuccess(data.mensagem);
+            // Global.setSuccess(data.mensagem);
 
             // Remove o bloqueio
             $(this).removeClass("bloqueiaForm");
+
+            // Redireciona para pagina de projetos
+            // location.href = Global.config.url + "projetos";
+
         })
         .catch(() => {
 

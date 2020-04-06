@@ -26,13 +26,13 @@ $("#adicionarUsuario").on("submit", function(){
             if(data.tipo == true)
             {
                 // Avisa que deu certo
-                Global.setSuccess(data.mensagem);
+                // Global.setSuccess(data.mensagem);
 
                 // Libera o formulário
                 setTimeout(() => {
                     $(this).removeClass("bloqueiaForm");
                     window.location.href = Global.config.url+'usuarios';
-                },3000);
+                },2000);
 
             }
 
@@ -78,13 +78,13 @@ $("#editarUsuario").on("submit", function(){
             if(data.tipo == true)
             {
                 // Avisa que deu certo
-                Global.setSuccess(data.mensagem);
+                // Global.setSuccess(data.mensagem);
 
                 // Libera o formulário
                 setTimeout(() => {
                     $(this).removeClass("bloqueiaForm");
-                    window.location.href = Global.config.url+'usuarios';
-                },3000);
+                    window.location.href = Global.config.url+'usuario/editar/'+id;
+                },2000);
 
             }
 

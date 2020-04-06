@@ -237,6 +237,7 @@ class Projeto extends Controller
         $dados = null;
         $usuario = null;
         $projeto = null;
+        $post = $_POST;
 
         // Seguranca
         $usuario = $this->seguranca();
@@ -246,15 +247,72 @@ class Projeto extends Controller
             ->get(["id_projeto" => $id])
             ->fetch(\PDO::FETCH_OBJ);
 
+        if(!empty($post["funcionarios"]))
+        {
+            // Primeiro apaga os antigo para depois inserir os novos
+            $this->objModelProjetoFuncionario->delete(["id_projeto" => $id]);
+
+            // Percorre os funcionarios
+            foreach ($post["funcionarios"] as $idfun => $funcao)
+            {
+                // Verifica se a quantidade é maior que 0
+                if($funcao != 0 || $funcao != "0")
+                {
+                    // Array
+                    $salvaFun = [
+                        "id_projeto" => $projeto->id_projeto,
+                        "id_funcionario" => $idfun,
+                        "funcao" => $funcao
+                    ];
+
+                    // Vincula o funcionario
+                    $this->objModelProjetoFuncionario->insert($salvaFun);
+                }
+            }
+        }
+
+        if(!empty($post["equipamentos"]))
+        {
+
+            // Primeiro apaga os antigo para depois inserir os novos
+            $this->objModelProjetoEquipamento->delete(["id_projeto" => $id]);
+
+
+            // Percorre os equipamentos
+            foreach ($post["equipamentos"] as $id => $quantidade)
+            {
+                // Verifica se a quantidade é maior que 0
+                if($quantidade > 0)
+                {
+                    // Array
+                    $salvaEq = [
+                        "id_projeto" => $projeto->id_projeto,
+                        "id_equipamento" => $id,
+                        "quantidade" => $quantidade
+                    ];
+
+                    // Atualiza o equipamento
+                    $this->objModelProjetoEquipamento->insert($salvaEq);
+                }
+            }
+        }
+
         // Verifica se existe
         if(!empty($projeto))
         {
-            // Recupera os dados post
-            $post = $_POST;
+            $updateProjeto = [
+                "nome" => $post['nome'],
+                "id_cliente" => $post['id_cliente'],
+                "local" => $post['local'],
+                "data_ida" => $post['data_ida'],
+                "data_volta" => $post['data_volta'],
+                "observacoes" => $post['observacoes']
+            ];
 
             // Altera
-            if($this->objModelProjeto->update($post, ["id_projeto" => $id]) != false)
+            if($this->objModelProjeto->update($updateProjeto, ["id_projeto" => $id]) != false)
             {
+
                 // Avisa que deu bom
                 $dados = [
                     "tipo" => true,

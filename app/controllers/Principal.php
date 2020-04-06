@@ -31,6 +31,7 @@ class Principal extends CI_controller
     private $objModelProjetos;
     private $objModelCategoria;
     private $objProjetoEquipamento;
+    private $objProjetoFuncionario;
 
     // Método construtor
     function __construct()
@@ -46,6 +47,7 @@ class Principal extends CI_controller
         $this->objModelProjetos = new Projeto();
         $this->objModelCategoria = new Categoria();
         $this->objProjetoEquipamento = new ProjetoEquipamento();
+        $this->objProjetoFuncionario = new ProjetoFuncionario();
     }
 
     /**
@@ -696,7 +698,7 @@ class Principal extends CI_controller
         // Buscando todos os clientes
         $clientes = $this->objModelClientes->get()->fetchAll(\PDO::FETCH_OBJ);
 
-
+        // Buscando todas as categorias
         $categorias = $this->objModelCategoria
             ->get()
             ->fetchAll(\PDO::FETCH_OBJ);
@@ -707,45 +709,6 @@ class Principal extends CI_controller
             $equipamentos = $this->objModelEquipamentos
                 ->get(["id_categoria" => $cat->id_categoria])
                 ->fetchAll(\PDO::FETCH_OBJ);
-
-            $cont = 0;
-
-            foreach ($equipamentos as $equipamento)
-            {
-                // Buscando o equipamento em outros projetos
-                $equipamentoProjetos = $this->objProjetoEquipamento
-                    ->get(["id_equipamento" => $equipamento->id_equipamento])
-                    ->fetch(\PDO::FETCH_OBJ);
-
-                // Verificando se achou o equipamento
-                if(!empty($equipamentoProjetos)) {
-
-                    // Buscando o projeto
-                    $buscaProjeto = $this->objModelProjetos
-                        ->get(['id_projeto' => $equipamentoProjetos->id_projeto])
-                        ->fetch(\PDO::FETCH_OBJ);
-
-
-                    // Verifica se o projeto está ativo
-                    if ($buscaProjeto->data_volta > date("Y-m-d"))
-                    {
-
-                        // Verificando se é o mesmo equipamento para fazer a subtração
-                        if ($equipamento->id_equipamento == $equipamentoProjetos->id_equipamento) {
-                            $equipamento->quantidade -= $equipamentoProjetos->quantidade;
-
-                            // Caso zerar a quantidade do equipamento, remove ele da lista
-                            if ($equipamento->quantidade <= 0) {
-                                unset($equipamentos[$cont]);
-                            }
-
-                        }
-
-                    }
-                }
-
-                $cont++;
-            }
 
             // Add os equipamentos
             $cat->equipamentos = $equipamentos;
@@ -798,18 +761,85 @@ class Principal extends CI_controller
             ->get(["id_projeto" => $id])
             ->fetch(\PDO::FETCH_OBJ);
 
+        // Buscando todos os clientes
         $clientes = $this->objModelClientes
             ->get()
             ->fetchAll(\PDO::FETCH_OBJ);
 
+        // Buscando o responsavel
         $responsavel = $this->objModelUsuario
             ->get(["id_usuario" => $projeto->id_usuario])
             ->fetch(\PDO::FETCH_OBJ);
+
+        // Buscando todos os funcionarios
+        $funcionarios = $this->objModelFuncionarios
+            ->get()
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        // Buscando os funcionarios do projeto
+        $funcionariosNoProjeto = $this->objProjetoFuncionario
+            ->get(["id_projeto" => $id])
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        // Percorrendo todos os funcionarios
+        foreach ($funcionarios as $funcionario)
+        {
+            // Perccorendo todos os funcionarios que foram no projeto
+            foreach ($funcionariosNoProjeto as $funcionarioNoProjeto)
+            {
+                // Verificando se o funcionario da lista de funcionario está no projeto existente
+                if ($funcionario->id_funcionario == $funcionarioNoProjeto->id_funcionario)
+                {
+                    // Pegando a funcao do funcionario no projeto
+                    $funcionario->funcao = $funcionarioNoProjeto->funcao;
+                }
+            }
+        }
+
+        // Buscando todos equipamentos
+        $equipamentos = $this->objModelEquipamentos
+            ->get()
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        // Buscando os equipamentos do projeto
+        $equipamentosProjeto = $this->objProjetoEquipamento
+            ->get(["id_projeto" => $id])
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        // Buscando todas as categorias
+        $categorias = $this->objModelCategoria
+            ->get()
+            ->fetchAll(\PDO::FETCH_OBJ);
+
+        foreach ($categorias as $cat)
+        {
+            // Buscando todos os equipamentos
+            $equipamentos = $this->objModelEquipamentos
+                ->get(["id_categoria" => $cat->id_categoria])
+                ->fetchAll(\PDO::FETCH_OBJ);
+
+            // Buscando todos os equipamentos
+            $equipamentosProjeto = $this->objProjetoEquipamento
+                ->get(["id_projeto" => $id])
+                ->fetchAll(\PDO::FETCH_OBJ);
+
+            // Buscando todos os equipamentos
+            $equipamentosTodos = $this->objProjetoEquipamento
+                ->get()
+                ->fetchAll(\PDO::FETCH_OBJ);
+
+            // Add os equipamentos
+            $cat->equipamentos = $equipamentos;
+        }
 
         $dados = [
             "usuario" => $usuario,
             "clientes" => $clientes,
             "projeto" => $projeto,
+            "funcionarios" => $funcionarios,
+            "equipamentos" => $equipamentos,
+            "equipamentosProjeto" => $equipamentosProjeto,
+            "categorias" => $categorias,
             "responsavel" => $responsavel,
             "js" => [
                 "modulos" => ["Projeto"]

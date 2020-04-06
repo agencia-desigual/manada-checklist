@@ -155,6 +155,118 @@
                                 </div>
                             </div>
 
+                            <div class="row pt-4">
+                                <div class="col-md-12">
+                                    <div id="accordion">
+                                        <!-- Equipamentos -->
+                                        <div class="card mb-0">
+                                            <div class="card-header" id="headingOne">
+                                                <h5 class="mb-0 mt-0 font-14">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-dark">
+                                                        <div class="mini-stat-icon float-left">
+                                                            <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-camera-retro bg-danger text-white"></i>
+                                                        </div> <p style="color: #FC5454 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px">Equipamentos</p>
+                                                    </a>
+                                                </h5>
+                                            </div>
+
+                                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div id="accordion2">
+                                                        <?php $cont = 1; ?>
+                                                        <?php foreach ($categorias as $cat) : ?>
+                                                            <?php if(!empty($cat->equipamentos)): ?>
+                                                                <!-- Equipamentos -->
+                                                                <div class="card mb-0">
+                                                                    <div class="card-header" id="heading<?= $cont ?>">
+                                                                        <h5 class="mb-0 mt-0 font-14">
+                                                                            <a data-toggle="collapse" data-parent="#accordion2" href="#collapse<?= $cont ?>" aria-expanded="true" aria-controls="collapse<?= $cont ?>" class="text-dark">
+                                                                                <div class="mini-stat-icon float-left">
+                                                                                    <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-list bg-danger text-white"></i>
+                                                                                </div> <p style="color: #FC5454 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px"><?= $cat->nome; ?></p>
+                                                                            </a>
+                                                                        </h5>
+                                                                    </div>
+
+                                                                    <div id="collapse<?= $cont; ?>" class="collapse <?php if($cont == 1){echo 'show';} ?>" aria-labelledby="heading<?= $cont; ?>" data-parent="#accordion2">
+                                                                        <div class="card-body">
+                                                                            <?php foreach ($cat->equipamentos as $equipamento) : ?>
+                                                                                <div class="custom-control semPad custom-checkbox">
+                                                                                    <div class="row">
+
+                                                                                        <div class="col-md-8 pt-3">
+                                                                                            <!-- <input type="checkbox" class="custom-control-input" id="customCheckEquipamento<?= $equipamento->id_equipamento ?>" data-parsley-multiple="groups"> -->
+                                                                                            <label><?= $equipamento->nome ?></label>
+                                                                                        </div>
+
+                                                                                        <div class="col-md-4 pt-2">
+                                                                                            <select name="equipamentos[<?= $equipamento->id_equipamento ?>]" class="form-control">
+                                                                                                <option value="0" selected disabled>Quantidade</option>
+                                                                                                <?php for ($i=1; $i<=$equipamento->quantidade; $i++) : ?>
+                                                                                                    <option class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
+                                                                                                <?php endfor; ?>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <?php endforeach; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <?php $cont++; ?>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Funcionarios -->
+                                        <div class="card mb-0">
+                                            <div class="card-header" id="headingTwo">
+                                                <h5 class="mb-0 mt-0 font-14">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne" class="text-dark">
+                                                        <div class="mini-stat-icon float-left">
+                                                            <i style="font-size: 20px;width: 45px;height: 45px;line-height: 45px;" class="fas fa-user-friends bg-primary text-white"></i>
+                                                        </div> <p style="color: #6e7ab7 !important;font-weight: 500;font-size: 15px;text-transform: uppercase;position: relative;display: inline; top: 10px; left: 8px">Funcionários</p>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <div>
+                                                            <?php foreach ($funcionarios as $funcionario) : ?>
+                                                                <div class="custom-control semPad custom-checkbox">
+                                                                    <div class="row">
+                                                                        <div class="col-md-8 pt-3">
+                                                                            <label><?= $funcionario->nome ?></label>
+                                                                        </div>
+
+                                                                        <div class="col-md-4 pt-2">
+                                                                            <select name="funcionarios[<?= $funcionario->id_funcionario ?>]" class="form-control">
+                                                                                <option value="0" selected >Não Vai</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Fotográfo") ? "selected" : "" ?> value="Fotográfo">Fotográfo</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Câmera 1") ? "selected" : "" ?> value="Câmera 1">Câmera 1</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Câmera 2") ? "selected" : "" ?> value="Câmera 2">Câmera 2</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Câmera 3") ? "selected" : "" ?> value="Câmera 3">Câmera 3</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Áudio") ? "selected" : "" ?> value="Áudio">Áudio</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Assistênte") ? "selected" : "" ?> value="Assistênte">Assistênte</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Direção") ? "selected" : "" ?> value="Direção">Direção</option>
+                                                                                <option <?= (!empty($funcionario->funcao) && $funcionario->funcao == "Produção") ? "selected" : "" ?> value="Produção">Produção</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group m-b-0 mt-4">
                                 <div class="float-right">

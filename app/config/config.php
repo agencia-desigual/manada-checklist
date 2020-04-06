@@ -37,4 +37,4 @@ $pluginsAutoLoad = [
 ];
 
 // Salva como constant
-defined("PLGUINS_AUTOLOAD") OR define("PLGUINS_AUTOLOAD", serialize($pluginsAutoLoad));
+defined("PLUGINS_AUTOLOAD") OR define("PLUGINS_AUTOLOAD", serialize($pluginsAutoLoad));

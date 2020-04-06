@@ -26,13 +26,13 @@ $("#adicionarEquipamento").on("submit", function(){
             if(data.tipo == true)
             {
                 // Avisa que deu certo
-                Global.setSuccess(data.mensagem);
+                // Global.setSuccess(data.mensagem);
 
                 // Libera o formulário
                 setTimeout(() => {
                     $(this).removeClass("bloqueiaForm");
                     window.location.href = Global.config.url+'equipamentos';
-                },3000);
+                },2000);
 
             }
 
@@ -78,13 +78,13 @@ $("#editarEquipamento").on("submit", function(){
             if(data.tipo == true)
             {
                 // Avisa que deu certo
-                Global.setSuccess(data.mensagem);
+                // Global.setSuccess(data.mensagem);
 
                 // Libera o formulário
                 setTimeout(() => {
                     $(this).removeClass("bloqueiaForm");
-                    window.location.href = Global.config.url+'equipamentos';
-                },3000);
+                    window.location.href = Global.config.url+'equipamento/editar/'+id;
+                },2000);
 
             }
 
