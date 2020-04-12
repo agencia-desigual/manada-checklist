@@ -823,6 +823,31 @@ class Principal extends CI_controller
                 ->get(["id_projeto" => $id])
                 ->fetchAll(\PDO::FETCH_OBJ);
 
+            // Verificando se existe algum equipamento selecioando
+            if(!empty($equipamentosProjeto))
+            {
+                // Percorrendo todos
+                foreach ($equipamentosProjeto as $equipamentoProjeto)
+                {
+                    $selecionado = [
+                        "id_equipamento" => $equipamentoProjeto->id_equipamento,
+                        "quantidade" => $equipamentoProjeto->quantidade
+                    ];
+
+                    // Adicionando os selecionados na lista de equipamentos
+                    foreach ($equipamentos as $equipamento)
+                    {
+                        if ($equipamento->id_equipamento == $selecionado["id_equipamento"])
+                        {
+                            $equipamento->selecionado = $selecionado["id_equipamento"];
+                            $equipamento->selecionadoQuantidade = $selecionado["quantidade"];
+                        }
+                    }
+
+                }
+            }
+
+
             // Buscando todos os equipamentos
             $equipamentosTodos = $this->objProjetoEquipamento
                 ->get()
@@ -831,6 +856,8 @@ class Principal extends CI_controller
             // Add os equipamentos
             $cat->equipamentos = $equipamentos;
         }
+
+
 
         $dados = [
             "usuario" => $usuario,

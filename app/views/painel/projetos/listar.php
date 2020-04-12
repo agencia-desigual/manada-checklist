@@ -60,6 +60,7 @@
                                             <a href="<?= BASE_URL; ?>projeto/imprimir/<?= $projeto->id_projeto ?>" title="Imprimir" target="_blank">
                                                 <i style="font-size: 27px; color: #0a67b7; padding-left: 7px" class="mdi mdi-cloud-print-outline"></i>
                                             </a>
+                                            <a href="#" class="duplicarProjeto" data-id="<?= $projeto->id_projeto ?>"> <i style="font-size: 25px;color: #0a67b7;margin-right: 15px;margin-left: 10px;" class="far fa-copy"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

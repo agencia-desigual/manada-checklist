@@ -337,6 +337,116 @@ class Projeto extends Controller
     } // End >> fun::update()
 
 
+    /**
+     * Método responsável por duplicar o projeto
+     * buscando todos os dados em outras tabelas e montado uma
+     * array para insert
+     * ---------------------------------------------------
+     * @author edilson-pereira
+     * ---------------------------------------------------
+     * @url api/projeto/duplicar/id
+     * @method POST
+     */
+    public function duplicar($param)
+    {
+
+        // Variaveis
+        $id = $param;
+        $projeto = null;
+        $equipamentos = null;
+        $funcionarios = null;
+        $dados = null;
+
+        // Buscando os dados na tabela projeto
+        $projeto = $this->objModelProjeto->get(["id_projeto" => $id])->fetchAll(\PDO::FETCH_OBJ);
+
+        // Pegandos todos os dados do projeto
+        foreach ($projeto as $pro)
+        {
+            $novoProjeto = [
+                "id_cliente" => $pro->id_cliente,
+                "id_usuario" => $pro->id_usuario,
+                "nome" => "COPIA - ".$pro->nome,
+                "local" => $pro->local,
+                "horario" => $pro->horario,
+                "observacoes" => $pro->observacoes,
+                "data_ida" => $pro->data_ida,
+                "data_volta" => $pro->data_volta,
+                "status" => $pro->status,
+            ];
+
+        }
+
+        // Inserindo o novo projeto
+        $insert = $this->objModelProjeto->insert($novoProjeto);
+
+        // Verifica se pelo menos inseriu o projeto
+        if ($insert)
+        {
+            // Pegando o id do projeto inserido
+            $idNovoProjeto = $insert;
+
+            // Buscando todos os equipamentos
+            $equipamentos = $this->objModelProjetoEquipamento->get(["id_projeto" => $id])->fetchAll(\PDO::FETCH_OBJ);
+
+            // Verificando se possui equipamentos
+            if(!empty($equipamentos))
+            {
+                // Percorrendo todos os equipamentos do projeto e fazendo o insert
+                foreach ($equipamentos as $equipamento)
+                {
+                    // Pegando os dados
+                    $novoEquipamento = [
+                        "id_projeto" => $idNovoProjeto,
+                        "id_equipamento" => $equipamento->id_equipamento,
+                        "quantidade" => $equipamento->quantidade
+                    ];
+
+                    // Inserindo os equipamentos
+                    $this->objModelProjetoEquipamento->insert($novoEquipamento);
+                }
+            }
+
+            //Buscando todos os funcionarios
+            $funcionarios = $this->objModelProjetoFuncionario->get(["id_projeto" =>$id])->fetchAll(\PDO::FETCH_OBJ);
+
+            // Verificando se possui funcionarios
+            if(!empty($funcionarios))
+            {
+                // Percorrendo todos os equipamentos do projeto e fazendo o insert
+                foreach ($funcionarios as $funcionario)
+                {
+                    // Pegando os dados
+                    $novoFuncionario = [
+                        "id_projeto" => $idNovoProjeto,
+                        "id_funcionario" => $funcionario->id_funcionario,
+                        "funcao" => $funcionario->funcao
+                    ];
+
+                    // Inserindo os funcionarios
+                    $this->objModelProjetoFuncionario->insert($novoFuncionario);
+                }
+            }
+
+            // Avisa que deu bom
+            $dados = [
+                "tipo" => true,
+                "code" => 200,
+                "mensagem" => "Projeto duplicado com sucesso."
+            ];
+
+        }
+        else
+        {
+            // Msg
+            $dados = ["mensagem" => "Erro ao duplicar o projeto"];
+        }
+
+        // Api
+        $this->api($dados);
+
+    }
+
 
     /**
      * Método responsável por validar a sessão

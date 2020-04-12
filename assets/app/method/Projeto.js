@@ -104,13 +104,15 @@ $("#alterarProjeto").on("submit", function(){
         .then((data) => {
 
             // Avisa que deu certo
-            // Global.setSuccess(data.mensagem);
+            Global.setSuccess(data.mensagem);
 
             // Remove o bloqueio
             $(this).removeClass("bloqueiaForm");
 
-            // Redireciona para pagina de projetos
-            // location.href = Global.config.url + "projetos";
+            // Redireciona
+            setTimeout(() => {
+                location.href = Global.config.url + "projetos";
+            }, 2000);
 
         })
         .catch(() => {
@@ -121,4 +123,46 @@ $("#alterarProjeto").on("submit", function(){
 
     // Não atualiza mesmo
     return false;
+});
+
+$(".duplicarProjeto").on("click", function(){
+
+    // Recupera o id
+    var id = $(this).data("id");
+
+    // Url
+    var url = Global.config.urlApi + "projeto/duplicar/" + id;
+
+    // Verifica se realmente deseja deletar
+    Swal.fire({
+        title: 'Duplicar Projeto',
+        text: 'Deseja realmente duplicar esse projeto?',
+        type: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, duplicar!'
+    }).then((result) => {
+        if (result.value)
+        {
+            // Realiza a solicitação
+            Global.enviaApi("POST", url, null)
+                .then((data) => {
+
+                    // Avisa que deu certo
+                    // Global.setSuccess(data.mensagem);
+
+                    // Redireciona
+                    setTimeout(() => {
+                        location.href = Global.config.url + "projetos";
+                    }, 1000);
+
+                });
+        }
+    });
+
+    // Não carrega mesmo
+    return false;
+
 });

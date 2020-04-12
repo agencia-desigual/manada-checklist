@@ -41,6 +41,7 @@ $Rotas->group("api-projeto","api/projeto","Api\Projeto");
 $Rotas->onGroup("api-projeto","POST","insert","insert");
 $Rotas->onGroup("api-projeto","POST","delete/{p}","delete");
 $Rotas->onGroup("api-projeto","POST","update/{p}","update");
+$Rotas->onGroup("api-projeto","POST","duplicar/{p}","duplicar");
 
 // -- Rotas sem grupo
 $Rotas->on("GET","login","Principal::login");

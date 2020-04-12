@@ -201,9 +201,9 @@
 
                                                                                         <div class="col-md-4 pt-2">
                                                                                             <select name="equipamentos[<?= $equipamento->id_equipamento ?>]" class="form-control">
-                                                                                                <option value="0" selected disabled>Quantidade</option>
+                                                                                                <option value="0" selected >Quantidade</option>
                                                                                                 <?php for ($i=1; $i<=$equipamento->quantidade; $i++) : ?>
-                                                                                                    <option class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
+                                                                                                    <option <?= (!empty($equipamento->selecionado) && $equipamento->selecionado == $equipamento->id_equipamento &&  $equipamento->selecionadoQuantidade == $i) ? "selected" : "" ?> class="quantidadeCheck" value="<?= $i ?>"><?= $i ?></option>
                                                                                                 <?php endfor; ?>
                                                                                             </select>
                                                                                         </div>
